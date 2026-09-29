@@ -1,0 +1,39 @@
+# ============================================================
+# DATA FOLDER
+# Ignore everything in data/ EXCEPT the README.
+# Keeps the repo lightweight while documenting the schema.
+# ============================================================
+data/*
+!data/README.md
+
+# macOS system files
+.DS_Store
+__MACOSX/
+._*
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# SQL dumps
+*.sql.gz
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# VS Code
+.vscode/
+
+# Environment variables
+.env
+
+# Logs
+*.log

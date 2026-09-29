@@ -1,0 +1,16 @@
+
+-- ============================================================
+-- TODO — NEXT SESSION (2026-09-30)
+-- ============================================================
+-- The JOIN in Q6 returned 0 rows, but the course slides
+-- suggest ~218 records should match the "impossible" pattern:
+--     tap_in_home + score=10 + visit_count=2
+--
+-- Diagnostics D5, D6, D7 are written above and ready to run.
+-- They will reveal:
+--   - Whether record_id links water_quality ↔ visits correctly
+--   - Whether the score=10 + visit_count=2 combo exists at all
+--   - How many tap_in_home sources exist in water_source
+--
+-- Next session: run diagnostics, fix the JOIN, confirm count.
+-- ============================================================

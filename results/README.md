@@ -116,6 +116,47 @@
 
 4. **Actionable conclusion:** Policy intervention should target shared taps directly — either by building more of them, or repairing and expanding existing ones.
 
-### Next step
-Phase 4 — investigate water quality scores and check for logical inconsistencies (e.g., second visits to home taps that shouldn't happen).
+---
 
+## Phase 4 — Investigating Water Quality (IN PROGRESS)
+
+**Date:** 2026-09-29
+**Script:** `sql/04_water_quality.sql`
+
+### What I ran
+- Explored `water_quality` structure and scale
+- Listed distinct quality scores
+- Counted perfect scores (score = 10)
+- Counted records with `visit_count = 2`
+- Attempted a 3-table JOIN to find "impossible" home taps
+
+### What I found
+
+| Metric | Value |
+|---|---|
+| Total records in `water_quality` | 60,146 |
+| Distinct scores | 0, 1, 2, 3, 4, 5, 6, 7, 9, 10 |
+| Records with score = 10 | 10,942 |
+| Records with visit_count = 2 | 2,928 |
+| "Impossible" home taps (JOIN result) | **0 rows** ⚠️ |
+
+### Data anomalies already spotted
+
+1. **A score of `0` exists** — outside the documented 1–10 range.
+2. **Score `8` is completely missing** — the distinct list jumps 7 → 9.
+3. **NULL values** appear in `record_id`, `visit_count`, and `subjective_quality_score`.
+
+### Open question (to resolve next session)
+
+The 3-table JOIN returned **0 rows**, but the course slides suggest ~218 rows should match.
+
+Possible causes to investigate:
+- The correct join key might not be `record_id` alone
+- The `visit_count` filter should apply to `water_quality.visit_count` vs `visits.visit_count`
+- Diagnostic queries (D5, D6, D7) are ready to run and will pinpoint the issue
+
+### Next session plan
+1. Run diagnostics D5, D6, D7 (already written in the SQL file)
+2. Identify why the JOIN returns 0
+3. Fix the query and confirm the true count of "impossible" records
+4. Document final Phase 4 findings

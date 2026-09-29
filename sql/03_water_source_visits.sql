@@ -42,3 +42,9 @@ JOIN water_source AS w ON v.source_id = w.source_id
 WHERE v.time_in_queue > 500
 GROUP BY w.type_of_water_source
 ORDER BY number_of_extreme_visits DESC;
+-- Step 4: Validate — how many distinct source_ids have extreme queues?
+-- Why: Confirms whether 105 visits happened at 105 different sources
+--      or a small number of chronically broken sources.
+SELECT COUNT(DISTINCT v.source_id) AS distinct_sources
+FROM visits AS v
+WHERE v.time_in_queue > 500;

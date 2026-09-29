@@ -83,5 +83,39 @@
 
 5. **Cross-check:** Total source count = 39,650 ✅ matches Phase 1's `water_source` row count, confirming the data is complete and consistent.
 
+---
+
+## Phase 3 — Investigating Long Queues
+
+**Date:** 2026-09-29
+**Script:** `sql/03_water_source_visits.sql`
+
+### What I ran
+- Filtered `visits` for `time_in_queue > 500`
+- Sorted worst queues first with `ORDER BY time_in_queue DESC`
+- **JOINed** `visits` with `water_source` on `source_id` to identify which source types cause long queues
+- Cross-checked with `COUNT(DISTINCT source_id)` to measure spread
+
+### What I found
+
+| Metric | Value |
+|---|---|
+| Visits with queue > 500 min | **105** |
+| Distinct sources affected | **105** |
+| Source type responsible | **shared_tap (100%)** |
+| Average queue time | **519.2 minutes (~8.7 hours)** |
+| Queue-time range of top 20 | 534–539 minutes (very tight) |
+
+### Key insights
+
+1. **Every extreme queue was at a shared tap.** No well, river, or home tap produced an 8-hour wait. This confirms Phase 2's prediction that shared taps are the overloaded source type.
+
+2. **105 visits = 105 different sources.** This is *not* one broken tap being revisited — it's a nationwide systemic pattern.
+
+3. **The queue-time range is suspiciously tight (534–539 min).** This is consistent with *physically consistent overload* (2,071 people per tap ≈ 8.7 hours) rather than random bad days.
+
+4. **Actionable conclusion:** Policy intervention should target shared taps directly — either by building more of them, or repairing and expanding existing ones.
+
 ### Next step
-Phase 3 — investigate the extreme queue times (>500 minutes) and identify which source types cause them.
+Phase 4 — investigate water quality scores and check for logical inconsistencies (e.g., second visits to home taps that shouldn't happen).
+

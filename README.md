@@ -77,27 +77,22 @@ This project approaches the problem as a data analyst rather than simply as a SQ
 
 # Project Goals
 
-The analysis focuses on five main goals:
+The analysis is structured into two comprehensive stages covering 13 distinct analytical phases:
 
-### 1. Understand the database
+### Part 1: Exploration, Anomaly Detection & Safe Data Cleaning
+1. **Understand the Database:** Explore available tables, columns, schema structure, and relationships.
+2. **Explore Water Sources:** Categorize source types and measure communities served.
+3. **Investigate Access Bottlenecks:** Analyze survey visits to discover extreme wait times (>8 hours).
+4. **Audit Water Quality Data:** Detect survey protocol anomalies (e.g. 218 duplicate home visits).
+5. **Clean Unreliable Pollution Data:** Detect false-clean labels and typos, test safely on a copy table, and validate.
 
-Explore the available tables, columns, identifiers, and relationships.
-
-### 2. Understand water sources
-
-Identify the different types of water sources and how they serve communities.
-
-### 3. Investigate access problems
-
-Analyze visits and queue times to identify water sources associated with long waiting times.
-
-### 4. Investigate water quality
-
-Examine water-quality records and identify suspicious or inconsistent observations.
-
-### 5. Clean unreliable data
-
-Identify incorrect pollution descriptions and classifications, safely correct them, and verify the results.
+### Part 2: Advanced Aggregation, Window Functions & Temporal Analysis
+6. **Standardize Employee Records:** Synthesize corporate email addresses and trim malformed phone numbers.
+7. **Evaluate Workforce Performance:** Map employee geographic distribution and honour top field surveyors.
+8. **Analyze Geographic Distribution:** Evaluate provincial and municipal source density (60% rural breakdown).
+9. **Assess National Population Impact:** Calculate exact population shares and infrastructure failure rates (45% broken home taps).
+10. **Formulate Data-Driven Priority Queues:** Use SQL Window Functions (`RANK`, `DENSE_RANK`, `ROW_NUMBER`) to rank repair targets.
+11. **Analyze Temporal Queue Patterns:** Construct an executive SQL Pivot Table breaking down wait times by hour across all 7 days.
 
 ---
 
@@ -552,18 +547,16 @@ Validate
 
 This project demonstrates practical use of:
 
-| SQL Skill           | Application                 |
-| ------------------- | --------------------------- |
-| `SELECT`            | Retrieve and explore data   |
-| `WHERE`             | Filter records              |
-| `DISTINCT`          | Identify unique categories  |
-| `LIKE`              | Search text patterns        |
-| `AND`               | Combine conditions          |
-| `LIMIT`             | Inspect sample records      |
-| `UPDATE`            | Correct data                |
-| `CREATE TABLE`      | Create a test copy          |
-| `DROP TABLE`        | Remove temporary tables     |
-| Table relationships | Connect related information |
+| SQL Category | Functions / Keywords | Practical Application in Project |
+| :--- | :--- | :--- |
+| **Data Retrieval & Filtering** | `SELECT`, `FROM`, `WHERE`, `DISTINCT`, `LIMIT` | Exploring tables, sampling records, and filtering anomalous conditions |
+| **Relational Connections** | `JOIN`, `ON`, Foreign Keys | Linking visits to water sources and employees |
+| **Aggregation & Grouping** | `COUNT()`, `SUM()`, `AVG()`, `ROUND()`, `GROUP BY`, `ORDER BY` | Sizing population impact, municipal source density, and queue metrics |
+| **String Operations** | `LOWER()`, `REPLACE()`, `CONCAT()`, `TRIM()`, `LENGTH()`, `LIKE` | Synthesizing employee corporate emails and stripping corrupt trailing phone spaces |
+| **Date & Time Manipulation** | `DATEDIFF()`, `DAYNAME()`, `TIME_FORMAT()`, `TIME()` | Measuring survey duration (924 days) and identifying Saturday queue peaks |
+| **Window Functions** | `RANK()`, `DENSE_RANK()`, `ROW_NUMBER()`, `OVER (PARTITION BY ...)` | Multi-level engineering priority rankings by water source type |
+| **Conditional Logic & Pivoting** | `CASE WHEN ... THEN ... ELSE NULL END`, `NULLIF()`, `IF()` | Building an executive hourly Pivot Table across all 7 days of the week |
+| **Data Cleaning & DDL** | `CREATE TABLE ... AS`, `DROP TABLE`, `UPDATE ... SET` | Creating isolated sandbox backup tables to test updates safely |
 
 ---
 
@@ -641,16 +634,24 @@ maji-ndogo-sql-analysis/
 ├── README.md
 │
 ├── sql/
+│   ├── README.md
 │   ├── 01_database_exploration.sql
 │   ├── 02_water_sources.sql
 │   ├── 03_water_source_visits.sql
 │   ├── 04_water_quality.sql
 │   ├── 05_pollution_analysis.sql
 │   ├── 06_data_cleaning.sql
-│   └── 07_validation.sql
+│   ├── 07_validation.sql
+│   ├── 08_employee_data_cleaning.sql
+│   ├── 09_honouring_workers.sql
+│   ├── 10_location_analysis.sql
+│   ├── 11_water_source_breakdown.sql
+│   ├── 12_priority_ranking.sql
+│   └── 13_queue_pivot_analysis.sql
 │
 ├── data/
-│   └── README.md
+│   ├── README.md
+│   └── md_water_services.sql
 │
 ├── results/
 │   └── README.md
@@ -844,11 +845,12 @@ Interested in:
 
 ## Project Status
 
-🚧 **In Progress**
+✅ **Part 1 & Part 2 Completed (Phases 1 through 13)**
 
-The repository will be developed step by step as the analysis progresses.
-
-New SQL queries, findings, validation results, and documentation will be added as each stage is completed.
+- **Part 1:** Database Exploration, Anomaly Detection & Safe Data Cleaning (`sql/01` - `07`)
+- **Part 2:** Advanced Aggregation, Window Functions & Temporal Queue Analysis (`sql/08` - `13`)
+- **Detailed Findings:** Comprehensive results log documented in [`results/README.md`](results/README.md).
+- **Executive Insights:** Strategic recommendations documented in [`docs/analysis_notes.md`](docs/analysis_notes.md).
 
 ---
 

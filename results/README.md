@@ -24,6 +24,12 @@ Each phase includes:
 | Phase 5 | Well Pollution Analysis     | ✅ Complete |
 | Phase 6 | Safe Data Cleaning          | ✅ Complete |
 | Phase 7 | Post-Cleaning Validation    | ✅ Complete |
+| Phase 8 | Employee Data Standardization | ✅ Complete |
+| Phase 9 | Honouring Field Workers     | ✅ Complete |
+| Phase 10 | Location & Rural Analysis   | ✅ Complete |
+| Phase 11 | Population Impact & Percentages | ✅ Complete |
+| Phase 12 | Priority Ranking (Window Functions) | ✅ Complete |
+| Phase 13 | Queue Pivot Table Analysis  | ✅ Complete |
 
 ---
 
@@ -323,3 +329,126 @@ WHERE description LIKE 'Clean_%'
 | **Queue Crisis** | 100% of queues > 500 min (average 8.7 hrs) occurred exclusively at shared taps. | Direct priority to expand shared tap density and home piping. |
 | **Data Integrity** | 218 impossible survey logs identified (`score = 10` & `visit_count = 2`). | Justifies an independent internal audit of surveyor records. |
 | **Public Health** | 40 biologically contaminated wells were falsely classified as Clean. | Prevented public health crisis by correctly reclassifying contaminated wells. |
+
+---
+
+# Phase 8: Employee Data Standardization
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/08_employee_data_cleaning.sql`
+
+## Objectives & Solutions
+1. **Corporate Email Generation:** Built standard government emails (`first.last@ndogowater.gov`) using `CONCAT(LOWER(REPLACE(employee_name, ' ', '.')), '@ndogowater.gov')`.
+2. **Phone Number Trimming:** Fixed 13-character phone numbers by trimming hidden trailing spaces with `TRIM(phone_number)`, restoring valid 12-character format for automated SMS dispatch.
+
+---
+
+# Phase 9: Honouring Field Workers
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/09_honouring_workers.sql`
+
+## Key Findings
+- **Workforce Geography:** 29 out of our workforce live in `Rural` communities, placing surveyors close to the frontline.
+- **Top 3 Field Surveyors:**
+  1. **Bello Azibo** (`assigned_employee_id = 1`): **3,708 visits**
+  2. **Pili Zola** (`assigned_employee_id = 30`): **3,676 visits**
+  3. **Rudo Imani** (`assigned_employee_id = 34`): **3,539 visits**
+
+---
+
+# Phase 10: Geographic Location Analysis
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/10_location_analysis.sql`
+
+## Geographic Distribution
+- **Rural Water Sources:** **23,740 sources (60%)**
+- **Urban Water Sources:** **15,910 sources (40%)**
+
+### Strategic Insight
+With 60% of water points located in remote rural communities, engineering logistics, supply chains, and drilling equipment must be structured for rural deployment where infrastructure access is toughest.
+
+---
+
+# Phase 11: Water Source Breakdown & Population Proportions
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/11_water_source_breakdown.sql`
+
+## National Population Statistics
+- **Total Population Surveyed:** **27,628,140 citizens** (~27.6 million).
+
+| Water Source Type | Number of Sources | Population Served | % of Population | Avg People / Source |
+| :--- | ---: | ---: | ---: | ---: |
+| **`shared_tap`** | 5,767 | 11,945,272 | **43%** | **~2,071** |
+| **`well`** | 17,383 | 4,841,724 | **18%** | ~278 |
+| **`tap_in_home`** | 7,265 | 4,678,880 | **17%** | ~644 (~100 homes) |
+| **`tap_in_home_broken`** | 5,856 | 3,799,720 | **14%** | ~649 (~100 homes) |
+| **`river`** | 3,379 | 2,362,544 | **9%** | ~699 |
+
+### Critical Takeaways
+1. **The Piped Infrastructure Deficit:** 31% of the population has home piping installed, but **45% (3.8M people) have broken connections**. Repairing municipal pumps and pipes restores water immediately.
+2. **The Shared Tap Dependency:** 43% rely on shared taps, causing systemic queue congestion.
+
+---
+
+# Phase 12: Priority Ranking Using Window Functions
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/12_priority_ranking.sql`
+
+## Technical Methodology
+- Excluded functional `tap_in_home` to focus strictly on improvable sources.
+- Applied `RANK() OVER (PARTITION BY type_of_water_source ORDER BY number_of_people_served DESC)` to generate ranked repair queues.
+- Demonstrated differences between `RANK()` (gap ranks), `DENSE_RANK()` (consecutive ranks), and `ROW_NUMBER()` (unique sequential dispatch).
+
+---
+
+# Phase 13: Queue Time Analysis & Executive SQL Pivot Table
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/13_queue_pivot_analysis.sql`
+
+## Findings
+- **Survey Duration:** **924 days** (~2.5 years of continuous field operations).
+- **True Average Queue Time:** **123 minutes (~2.0 hours)** when excluding instant-access home taps via `NULLIF(time_in_queue, 0)`.
+- **Weekly Queue Heatmap:**
+  - **Saturday:** **246 minutes (>4.1 hours)** nationwide average wait time.
+  - **Monday:** **137 minutes** (rush to replenish after weekend).
+  - **Sunday:** **82 minutes** (lowest wait time; family & religious observance).
+
+## Executive Hourly Pivot Heatmap
+
+```text
+Hour    Sun   Mon   Tue   Wed   Thu   Fri   Sat
+06:00    79   190   134   112   134   153   247
+07:00    82   186   128   111   139   156   247
+08:00    86   183   130   119   129   153   247
+09:00    84   127   105    94    99   107   252
+10:00    83   119    99    89    95   112   259
+11:00    78   115   102    86    99   104   236
+12:00    78   115    97    88    96   109   239
+13:00    81   122    97    98   101   115   242
+14:00    83   127   104    92    96   110   244
+15:00    83   126   104    88    92   110   248
+16:00    83   127    99    90    99   109   251
+17:00    79   181   135   121   129   151   251
+18:00    80   174   122   113   132   158   240
+19:00   127   159   145   176   137   103   282
+```
+
+---
+
+# Strategic Solutions for President Naledi
+
+1. **Shared Taps (UN 30-Minute Standard):**
+   - Immediate dispatch of mobile water tankers on **Saturdays** and **weekday rush hours (06:00-08:00, 17:00-19:00)** based on our Pivot Table.
+   - Install additional shared taps in high-density areas to bring queue times below the UN threshold of 30 minutes.
+2. **Broken Home Taps (High ROI Intervention):**
+   - Repair central treatment facilities, reservoirs, and primary pipe mains to immediately restore access for 3.8M citizens.
+3. **Wells Purification:**
+   - Install UV filters on biologically contaminated wells to kill bacteria and parasites.
+   - Install reverse osmosis on chemically polluted wells.
+4. **Rivers:**
+   - Temporary tanker supply while drilling permanent deep community boreholes.

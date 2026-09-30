@@ -5,7 +5,7 @@ Maji Ndogo is a nation facing critical clean water shortages. The national surve
 
 ---
 
-## 2. Key Findings Summary
+## 2. Part 1 Key Findings Summary
 
 ### Finding 1: Shared Tap Bottleneck & Crisis
 - **5,767 shared taps** serve **11,945,272 people** (~2,071 people per tap).
@@ -33,9 +33,45 @@ Maji Ndogo is a nation facing critical clean water shortages. The national surve
 
 ---
 
-## 3. Data Cleaning Pipeline Applied
-1. **Sandbox Creation:** Built a temporary copy table (`well_pollution_copy`).
-2. **Staged Updates:** Corrected descriptions and reclassified false-clean records to `'Contaminated: Biological'`.
-3. **Validation Check:** Confirmed 0 error records remain before applying changes to production.
-4. **Production Update:** Safely executed changes on `well_pollution` and dropped the staging copy table.
-5. **Quality Assurance:** Re-verified live database with post-cleaning validation script.
+## 3. Part 2 Key Findings & Advanced Analytics
+
+### Finding 6: Employee Data Standardization
+- Reconstructed corporate emails (`first.last@ndogowater.gov`) using SQL string functions (`LOWER`, `REPLACE`, `CONCAT`).
+- Fixed hidden trailing spaces in phone numbers using `TRIM()` (reduced length from 13 to 12 characters) to enable automated SMS alert systems.
+
+### Finding 7: 60% Rural Distribution
+- **60% of all water sources (23,740 sources)** are located in rural communities, while only 40% are urban.
+- Infrastructure teams must prioritize rural logistics, mobile maintenance crews, and specialized equipment.
+
+### Finding 8: National Population Proportions
+- **Total Population Surveyed:** 27,628,140 citizens.
+- **Shared Taps (43%):** 11.9 million people depend on public taps.
+- **Home Taps (31% total):** 17% functional, but 14% broken (meaning 45% of existing home infrastructure is failing).
+- **Wells (18%):** 4.8 million people.
+- **Rivers (9%):** 2.4 million people drinking raw river water.
+
+### Finding 9: Data-Driven Priority Queuing
+- Excluded functional home taps (`tap_in_home`) from repair lists.
+- Used SQL Window Functions (`RANK() OVER (PARTITION BY type_of_water_source ORDER BY number_of_people_served DESC)`) to build an engineering priority list ranking sources by population impact.
+
+### Finding 10: The Saturday Queue Crisis & Hourly Heatmap
+- Survey elapsed over **924 days** (~2.5 years).
+- Citizens without home taps spend an average of **123 minutes (~2 hours)** queuing for water.
+- **Saturday Crisis:** Average queue time surges to **246 minutes (>4.1 hours)** as households gather their weekly water supply.
+- **Rush Hours:** Weekdays experience twin spikes in the early morning (06:00-08:00) and evening (17:00-19:00).
+- **Sunday Respite:** Shortest queue times (**82 minutes**) due to cultural, religious, and family priorities.
+
+---
+
+## 4. Strategic Recommendations for President Naledi
+
+1. **Target the UN 30-Minute Water Standard:**
+   - Under international standards, acceptable wait time for drinking water is $\le 30$ minutes.
+   - Install additional shared taps in dense neighborhoods to reduce average waits from 123 minutes to under 30 minutes.
+2. **Immediate Saturday Water Tanker Relief:**
+   - Deploy emergency mobile water trucks to the highest-ranked shared taps on Saturdays and weekday peak hours (guided by our SQL Pivot Table heatmap).
+3. **High-ROI Piped Infrastructure Repairs:**
+   - Repairing central treatment plants and feeder pipes will immediately restore running water to 3.8 million people with broken home taps, instantly taking pressure off shared taps.
+4. **Water Quality Upgrades:**
+   - Install UV purification filters on biologically contaminated wells.
+   - Install reverse osmosis filtration units on chemically contaminated wells.

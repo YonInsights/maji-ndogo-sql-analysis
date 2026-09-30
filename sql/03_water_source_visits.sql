@@ -1,6 +1,7 @@
 -- ============================================================
 -- Maji Ndogo SQL Analysis
 -- Phase 3: Investigating Long Queues
+-- Script: 03_water_source_visits.sql
 -- ============================================================
 -- Purpose:
 --   Find water sources associated with extreme queue times
@@ -29,19 +30,20 @@ WHERE time_in_queue > 500
 ORDER BY time_in_queue DESC
 LIMIT 20;
 
--- Step 3: JOIN to find out WHICH source types cause long queues
--- Why: "Long queues" alone is a symptom. "Long queues at shared
---      taps" is an actionable insight. This query connects the
---      visits table to the water_source table via source_id.
+-- Step 3: Which source types have extreme queues (> 500 minutes)?
+-- Why: "Long queues" alone is a symptom. "Long queues at shared taps"
+--      is an actionable insight. Connect visits to water_source via source_id.
 SELECT
     w.type_of_water_source,
     COUNT(*) AS number_of_extreme_visits,
     ROUND(AVG(v.time_in_queue), 1) AS avg_queue_minutes
 FROM visits AS v
-JOIN water_source AS w ON v.source_id = w.source_id
+JOIN water_source AS w 
+    ON v.source_id = w.source_id
 WHERE v.time_in_queue > 500
 GROUP BY w.type_of_water_source
 ORDER BY number_of_extreme_visits DESC;
+
 -- Step 4: Validate — how many distinct source_ids have extreme queues?
 -- Why: Confirms whether 105 visits happened at 105 different sources
 --      or a small number of chronically broken sources.

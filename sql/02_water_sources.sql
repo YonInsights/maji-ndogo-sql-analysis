@@ -1,6 +1,7 @@
 -- ============================================================
 -- Maji Ndogo SQL Analysis
 -- Phase 2: Water Source Exploration
+-- Script: 02_water_sources.sql
 -- ============================================================
 -- Purpose:
 --   Identify all unique types of water sources and understand

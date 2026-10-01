@@ -30,7 +30,7 @@ The source data was provided as part of the ALX Data Science program.
 
 | \*\*Total columns\*\* | 43 |
 
-| \*\*Tables\*\* | 9 |
+| \*\*Tables\*\* | 10 |
 
 | \*\*Source\*\* | ALX Data Science / Maji Ndogo Integrated Project |
 
@@ -305,6 +305,33 @@ Independent audit records conducted by Chief Auditor Tendai Mubarak.
 
 
 
+## Table 10: `Project_progress`
+
+
+
+Operational tracking table for engineering repairs and infrastructure upgrades.
+
+
+
+| Column | Description | Data Type |
+|---|---|---|
+| `Project_id` | Auto-incrementing primary key | SERIAL (BIGINT UNSIGNED) |
+| `source_id` | FK → `water_source.source_id` | VARCHAR(20) |
+| `Address` | Street address of water source | VARCHAR(50) |
+| `Town` | Town of water source | VARCHAR(30) |
+| `Province` | Province of water source | VARCHAR(30) |
+| `Source_type` | Type of water source | VARCHAR(50) |
+| `Improvement` | Assigned engineering intervention | VARCHAR(50) |
+| `Source_status` | Status (`Backlog`, `In progress`, `Complete`) | VARCHAR(50) |
+| `Date_of_completion` | Date repair/installation was finalized | DATE |
+| `Comments` | Uncapped engineering notes and logs | TEXT |
+
+
+
+\---
+
+
+
 \## Relationship Diagram
 
 location ────┐
@@ -320,12 +347,12 @@ visits ────────┐
 ▼
 
 water\_source ────┐
+                 │
+│ source\_id      │ source\_id
+                 │
+▼                ▼
 
-│ source\_id
-
-▼
-
-well\_pollution
+well\_pollution   Project\_progress
 
 
 
@@ -335,5 +362,6 @@ employee ◄──── assigned\_employee\_id ──── visits
 
 water\_quality ◄──── record\_id ──── visits
  
- auditor\_report ◄──── location\_id ──── location
+auditor\_report ◄──── location\_id ──── location
+
 

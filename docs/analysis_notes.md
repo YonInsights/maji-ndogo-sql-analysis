@@ -100,3 +100,27 @@ Maji Ndogo is a nation facing critical clean water shortages. The national surve
 - Filtering citizen interview statements for keyword `'cash'` revealed multiple eyewitness reports of corrupt officials accepting money to falsely report clean water.
 - A cross-check confirmed that **0 employees outside the 4 suspects** had any allegations of cash bribery.
 - A formal dossier of SQL evidence was compiled for President Naledi's anti-corruption commission.
+
+---
+
+## 6. Part 4 Practical Action Plan & Engineering Implementation
+
+### Finding 14: Unified Analytical View (`combined_analysis_table`)
+- Unified 4 core operational tables (`visits`, `location`, `water_source`, and `well_pollution`).
+- Integrated `well_pollution` via `LEFT JOIN` to prevent dropping non-well sources (rivers, piped taps).
+- Deduplicated multiple site re-visits with `visits.visit_count = 1` across all 39,650 unique sources.
+
+### Finding 15: Regional Priorities & Disparity Analysis
+- **Sokoto Drilling Priority:** 21% of Sokoto relies on unsafe surface river water (compared to only 3-4% in other provinces). Well-drilling rigs must be allocated to Sokoto as top priority.
+- **Amanzi Central Infrastructure Overhaul:** 28% of Amanzi has broken home taps (accounting for half of its piped infrastructure). Repairing central pump stations, mains, and treatment works restores service with the highest return on investment.
+- **Severe Town-Level Disparity:** In **Amina (Amanzi)**, 95% of installed taps are non-functional (56% broken vs 3% working). By contrast, **Dahabu (Capital)** enjoys 98% tap functionality (55% working vs 1% broken), exposing systemic historical neglect in rural communities.
+
+### Finding 16: The 25,398 Project Operational Backlog (`Project_progress`)
+- Built an operational tracking table (`Project_progress`) with strict `CHECK` constraints on workflow status (`Backlog`, `In progress`, `Complete`).
+- Formulated prescriptive, data-driven improvement tasks for all **25,398 actionable water sources**:
+  1. **11,894 Biologically Contaminated Wells:** Deploy UV + Reverse Osmosis purification filtration units.
+  2. **5,856 Broken Piped Systems:** Dispatch engineering diagnostic crews to repair municipal pipe networks, pressure systems, and pumps.
+  3. **3,388 Overburdened Shared Taps:** Install additional taps nearby ($\lfloor\text{queue}/30\rfloor$) to drive queue times below the UN 30-minute standard.
+  4. **3,379 Surface Rivers:** Deploy mobile water tanker relief immediately while drilling permanent underground community boreholes.
+  5. **881 Chemically Contaminated Wells:** Install industrial Reverse Osmosis (RO) filtration units to strip toxic pollutants.
+

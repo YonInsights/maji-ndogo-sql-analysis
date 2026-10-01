@@ -513,3 +513,96 @@ Identify the specific field workers responsible for the 102 falsified records, e
 - Filtering citizen statements with `statements LIKE '%cash%'` revealed multiple eyewitness accounts of officials accepting cash bribes to log favorable scores.
 - **Integrity Check:** Querying for cash allegations among employees **NOT** in the suspect list returned **0 rows (Empty Set)**.
 - **Conclusion:** Allegations of bribery are confined strictly and exclusively to the **4 identified suspects** (Bello Azibo, Malachi Mavuso, Zuriel Matembo, and Lalitha Kaburi). Evidence has been compiled for President Naledi's anti-corruption commission.
+
+---
+
+# Phase 16: Assembling the Unified Data View
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/16_combined_analysis_table.sql`
+
+## Objective
+Unify disparate database tables (`visits`, `location`, `water_source`, and `well_pollution`) into a single consolidated analytical view (`combined_analysis_table`) to facilitate provincial, municipal, and engineering dispatch calculations.
+
+## Technical Methodology
+- **Anchor Table:** Queried from `visits` to preserve relational connections.
+- **Relational Joins:** Inner-joined `location` on `location_id` and `water_source` on `source_id`.
+- **Preserving Non-Well Sources:** Executed a `LEFT JOIN` on `well_pollution`. An `INNER JOIN` would have discarded 57% of sources (shared taps, home taps, rivers) because only wells undergo chemical/biological pollution lab tests.
+- **Deduplication:** Filtered `visits.visit_count = 1` to ensure multi-visit survey records (e.g. `AkHa00103` visited 8 times) do not distort population calculations.
+- **Virtual View:** Created `CREATE OR REPLACE VIEW combined_analysis_table AS ...` to provide a modular foundation for subsequent analyses.
+
+---
+
+# Phase 17: Provincial & Municipal Infrastructure Pivots
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/17_provincial_and_town_pivots.sql`
+
+## Objective
+Identify specific provinces and municipalities suffering from acute infrastructure vulnerabilities by aggregating population shares using dynamic SQL Pivot Tables and temporary tables.
+
+## 1. Provincial Infrastructure Distribution
+
+Using CTE `province_totals` joined to `combined_analysis_table`:
+
+| Province | River (%) | Shared Tap (%) | Tap in Home (%) | Tap in Home Broken (%) | Well (%) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Akatsi** | 3% | 46% | 14% | 12% | 25% |
+| **Amanzi** | 3% | 38% | 28% | 28% | 3% |
+| **Hawassa** | 4% | 42% | 15% | 15% | 24% |
+| **Kilimani** | 12% | 48% | 13% | 12% | 15% |
+| **Sokoto** | **21%** | 39% | 16% | 10% | 14% |
+
+### Strategic Provincial Takeaways:
+1. **The Sokoto River Crisis:** **21% of Sokoto's population** drinks from raw rivers. Well-drilling rigs must be dispatched to Sokoto first.
+2. **The Amanzi Piped System Breakdown:** In Amanzi, **half of all piped home taps are broken** (28% broken vs 28% functional). Fixing central infrastructure here restores running water to hundreds of thousands immediately.
+
+## 2. Municipal (Town) Aggregated Water Access
+
+To overcome duplicate town names across provinces (e.g., `Harare` in Akatsi vs Kilimani, `Amina` in Amanzi vs Hawassa), we grouped and joined on the composite key `(province_name, town_name)` and materialized a `TEMPORARY TABLE town_aggregated_water_access`.
+
+### Acute Municipal Disparities:
+Filtering by infrastructure failure ratio:
+$$\text{Pct\_broken\_taps} = \frac{\text{tap\_in\_home\_broken}}{\text{tap\_in\_home\_broken} + \text{tap\_in\_home}} \times 100$$
+
+* **Amina (Amanzi):** **95% Failure Rate** (56% broken vs 3% functional taps). Infrastructure was installed but completely neglected.
+* **Dahabu (Amanzi - Capital):** **98% Functioning Rate** (55% functional vs 1% broken taps). Demonstrates severe historical resource allocation bias toward the political center.
+
+---
+
+# Phase 18: Engineering Action Plan & Implementation
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/18_project_progress_action_plan.sql`
+
+## Objective
+Translate all analytical findings into a concrete, operational database table (`Project_progress`) with prescriptive engineering improvements and lifecycle tracking for field crews.
+
+## Action Plan Formulation Rules
+
+| Water Source Type | Condition | Assigned Engineering Improvement |
+| :--- | :--- | :--- |
+| **`river`** | All rivers | **`Drill well`** |
+| **`well`** | `Contaminated: Chemical` | **`Install RO filter`** (Reverse Osmosis) |
+| **`well`** | `Contaminated: Biological` | **`Install UV and RO filter`** (Ultraviolet + RO) |
+| **`shared_tap`** | Queue $\ge 30\text{ min}$ | **`Install X taps nearby`** where $X = \lfloor\frac{\text{time\_in\_queue}}{30}\rfloor$ |
+| **`tap_in_home_broken`** | All broken taps | **`Diagnose local infrastructure`** |
+| **Clean Wells / Short Queues** | Queue $< 30\text{ min}$ / Clean Wells | Excluded from backlog (no immediate action needed) |
+
+## Implementation Results
+
+- **Table DDL:** Created `Project_progress` with `SERIAL PRIMARY KEY`, foreign keys to `water_source`, and `CHECK (Source_status IN ('Backlog', 'In progress', 'Complete'))`.
+- **Target Population:** Exactly **25,398 water sources** require immediate engineering intervention.
+- **Data Integrity:** **0 NULL values** in the `Improvement` column after inserting the filtered cohort.
+
+### Final Engineering Backlog Breakdown
+
+| Rank | Improvement Intervention | Total Sites | % of Backlog | Strategic Impact |
+| :---: | :--- | ---: | ---: | :--- |
+| 1 | **Install UV and RO filter** | **11,894** | **46.8%** | Eradicates pathogenic bacteria in contaminated wells |
+| 2 | **Diagnose local infrastructure** | **5,856** | **23.1%** | Restores running water to 3.8M citizens with home piping |
+| 3 | **Install X taps nearby** | **3,388** | **13.3%** | Relieves queue congestion down to the UN 30-min standard |
+| 4 | **Drill well** | **3,379** | **13.3%** | Replaces untreated river water with clean underground wells |
+| 5 | **Install RO filter** | **881** | **3.5%** | Purifies chemical toxins and heavy metals in wells |
+| **Total** | **All Actionable Projects** | **25,398** | **100.0%** | Full nationwide coverage for President Naledi |
+

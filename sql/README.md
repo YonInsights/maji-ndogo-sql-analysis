@@ -20,6 +20,9 @@ Run them in numbered order in MySQL Workbench.
 | `13_queue_pivot_analysis.sql` | 13 | DateTime metrics and hour x day SQL Pivot Table |
 | `14_auditor_comparison.sql` | 14 | Integrate auditor report, 3-table JOIN, and score comparison |
 | `15_investigating_corruption.sql` | 15 | Create VIEW, CTE suspect list, and bribery statement analysis |
+| `16_combined_analysis_table.sql` | 16 | Join 4 tables with LEFT JOIN & create `combined_analysis_table` VIEW |
+| `17_provincial_and_town_pivots.sql` | 17 | Provincial & town access pivots, temporary tables & disparity analysis |
+| `18_project_progress_action_plan.sql` | 18 | DDL for `Project_progress`, filtering, CASE logic, and data population |
 
 ## Prerequisites
 

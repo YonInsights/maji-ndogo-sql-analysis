@@ -77,7 +77,7 @@ This project approaches the problem as a data analyst rather than simply as a SQ
 
 # Project Goals
 
-The analysis is structured across 15 distinct analytical phases spanning three parts:
+The analysis is structured across 18 distinct analytical phases spanning four parts:
 
 ### Part 1: Exploration, Anomaly Detection & Safe Data Cleaning
 1. **Understand the Database:** Explore available tables, columns, schema structure, and relationships.
@@ -100,6 +100,11 @@ The analysis is structured across 15 distinct analytical phases spanning three p
 14. **Audit Data Integration & Score Comparison:** Join independent audit records (`auditor_report`, `visits`, `water_quality`) and isolate 102 tampered quality scores.
 15. **Corruption Probe & Bribery Statement Analysis:** Create persistent VIEW (`Incorrect_records`), isolate suspect employees via CTEs, and analyze citizen statements citing `"cash"` bribery.
 
+### Part 4: Integrated Provincial Analysis & Engineering Action Plan
+16. **Assembling the Unified Data View:** Connect 4 tables via `LEFT JOIN` and construct the `combined_analysis_table` VIEW.
+17. **Provincial & Municipal Infrastructure Pivots:** Aggregate population access shares, resolve cross-provincial town naming duplicates, and expose rural disparities.
+18. **Operational Engineering Action Plan:** Architect the `Project_progress` table, filter the 25,398 project backlog, and map prescriptive engineering solutions.
+
 ---
 
 # Dataset
@@ -116,6 +121,7 @@ visits
 water_source
 well_pollution
 auditor_report
+Project_progress
 ```
 
 Each table represents a different part of the water-services system.
@@ -564,8 +570,10 @@ This project demonstrates practical use of:
 | **Window Functions** | `RANK()`, `DENSE_RANK()`, `ROW_NUMBER()`, `OVER (PARTITION BY ...)` | Multi-level engineering priority rankings by water source type |
 | **Conditional Logic & Pivoting** | `CASE WHEN ... THEN ... ELSE NULL END`, `NULLIF()`, `IF()` | Building an executive hourly Pivot Table across all 7 days of the week |
 | **Data Cleaning & DDL** | `CREATE TABLE ... AS`, `DROP TABLE`, `UPDATE ... SET` | Creating isolated sandbox backup tables to test updates safely |
-| **Database Views** | `CREATE VIEW ... AS` | Centralizing multi-table audit joins into reusable virtual tables (`Incorrect_records`) |
-| **Common Table Expressions (CTEs)** | `WITH ... AS (...)` | Constructing modular query pipelines to isolate suspect surveyors exceeding mistake thresholds |
+| **Database Views** | `CREATE VIEW ... AS` | Centralizing multi-table audit joins into reusable virtual tables (`Incorrect_records`, `combined_analysis_table`) |
+| **Common Table Expressions (CTEs)** | `WITH ... AS (...)` | Constructing modular query pipelines to isolate suspect surveyors and calculate provincial totals |
+| **Temporary Tables** | `CREATE TEMPORARY TABLE ...` | Materializing complex multi-key municipal aggregations (`town_aggregated_water_access`) for fast analysis |
+| **Prescriptive Logic & Math** | `CASE WHEN ...`, `CONCAT()`, `FLOOR()` | Generating dynamic engineering improvements and calculating required relief taps ($\lfloor\text{queue}/30\rfloor$) |
 
 ---
 
@@ -658,7 +666,10 @@ maji-ndogo-sql-analysis/
 │   ├── 12_priority_ranking.sql
 │   ├── 13_queue_pivot_analysis.sql
 │   ├── 14_auditor_comparison.sql
-│   └── 15_investigating_corruption.sql
+│   ├── 15_investigating_corruption.sql
+│   ├── 16_combined_analysis_table.sql
+│   ├── 17_provincial_and_town_pivots.sql
+│   └── 18_project_progress_action_plan.sql
 │
 ├── data/
 │   ├── README.md
@@ -857,11 +868,12 @@ Interested in:
 
 ## Project Status
 
-✅ **Part 1, Part 2 & Part 3 Completed (Phases 1 through 15)**
+✅ **All 4 Parts Fully Completed (Phases 1 through 18)**
 
 - **Part 1:** Database Exploration, Anomaly Detection & Safe Data Cleaning (`sql/01` - `07`)
 - **Part 2:** Advanced Aggregation, Window Functions & Temporal Queue Analysis (`sql/08` - `13`)
 - **Part 3:** Independent Auditor Verification & Corruption Investigation (`sql/14` - `15`)
+- **Part 4:** Unified Data Integration, Provincial Pivots & Operational Action Plan (`sql/16` - `18`)
 - **Detailed Findings:** Comprehensive results log documented in [`results/README.md`](results/README.md).
 - **Executive Insights:** Strategic recommendations documented in [`docs/analysis_notes.md`](docs/analysis_notes.md).
 

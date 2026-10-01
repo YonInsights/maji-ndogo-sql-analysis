@@ -75,3 +75,28 @@ Maji Ndogo is a nation facing critical clean water shortages. The national surve
 4. **Water Quality Upgrades:**
    - Install UV purification filters on biologically contaminated wells.
    - Install reverse osmosis filtration units on chemically contaminated wells.
+
+---
+
+## 5. Part 3 Independent Audit & Corruption Findings
+
+### Finding 11: Ground Audit Baseline (94% Accuracy)
+- Chief Auditor Tendai Mubarak re-surveyed 1,620 sites independently.
+- **1,518 sites (93.7% / ~94%)** matched original surveyor scores.
+- **102 sites (6.3%)** had falsified scores (clean scores of 10 logged for dirty/unusable water).
+- Water source categories were unaffected; corruption was isolated to quality ratings.
+
+### Finding 12: Identification of Primary Corrupt Suspects
+- Cross-referencing incorrect records identified 17 surveyors, but errors were heavily skewed:
+  - Average mistakes across cohort: ~6.
+  - **4 Surveyors accounted for 71 out of 102 tampered records (70%):**
+    1. **Bello Azibo:** 26 corrupt entries
+    2. **Malachi Mavuso:** 21 corrupt entries
+    3. **Zuriel Matembo:** 17 corrupt entries
+    4. **Lalitha Kaburi:** 7 corrupt entries
+  - The remaining 13 surveyors averaged only 1-2 mistakes, representing standard human error.
+
+### Finding 13: Concrete Bribery Evidence
+- Filtering citizen interview statements for keyword `'cash'` revealed multiple eyewitness reports of corrupt officials accepting money to falsely report clean water.
+- A cross-check confirmed that **0 employees outside the 4 suspects** had any allegations of cash bribery.
+- A formal dossier of SQL evidence was compiled for President Naledi's anti-corruption commission.

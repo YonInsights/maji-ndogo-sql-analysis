@@ -30,6 +30,8 @@ Each phase includes:
 | Phase 11 | Population Impact & Percentages | ✅ Complete |
 | Phase 12 | Priority Ranking (Window Functions) | ✅ Complete |
 | Phase 13 | Queue Pivot Table Analysis  | ✅ Complete |
+| Phase 14 | Auditor Report Integration & Score Verification | ✅ Complete |
+| Phase 15 | Corruption Probe & Bribery Statement Analysis | ✅ Complete |
 
 ---
 
@@ -452,3 +454,62 @@ Hour    Sun   Mon   Tue   Wed   Thu   Fri   Sat
    - Install reverse osmosis on chemically polluted wells.
 4. **Rivers:**
    - Temporary tanker supply while drilling permanent deep community boreholes.
+
+---
+
+# Phase 14: Integrating the Auditor's Report & Score Verification
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/14_auditor_comparison.sql`
+
+## Objective
+
+Integrate the independent audit data collected by Chief Auditor Tendai Mubarak (1,620 re-visited water sources) and compare auditor quality scores against the internal survey scores.
+
+## Technical Methodology
+- Joined `auditor_report`, `visits`, and `water_quality` using a 3-table join (`auditor_report.location_id = visits.location_id` and `visits.record_id = water_quality.record_id`).
+- Filtered `visits.visit_count = 1` to eliminate duplicate re-visits and isolate baseline assessments.
+
+## Findings
+
+| Metric | Count | Proportion | Interpretation |
+| :--- | ---: | ---: | :--- |
+| **Total Audited Sites** | **1,620** | 100% | Independent ground sample |
+| **Matching Scores** | **1,518** | **93.7% (~94%)** | Survey data verified accurate and honest |
+| **Mismatched / Tampered Scores** | **102** | **6.3%** | Falsified records requiring investigation |
+
+### Key Finding
+- In 102 instances, field surveyors recorded perfect scores of **`10`**, whereas the independent auditor tested the water and recorded true scores of **`0`, `1`, `2`, or `3`**.
+- Cross-referencing `type_of_water_source` revealed that source types were **not changed**. Only subjective quality ratings were falsified.
+
+---
+
+# Phase 15: Uncovering Data Tampering & The Corruption Probe
+
+**Status:** ✅ **COMPLETE**  
+**Script:** `sql/15_investigating_corruption.sql`
+
+## Objective
+
+Identify the specific field workers responsible for the 102 falsified records, evaluate whether errors were random or systematic, and cross-reference records with citizen interview statements.
+
+## Technical Workflow
+1. **Created VIEW `Incorrect_records`:** Centralized 4-table join including citizen statements.
+2. **Error Aggregation:** Grouped mistakes by `employee_name`.
+3. **Dynamic CTE Filtering (`suspect_list`):** Isolated employees exceeding the cohort average (~6 mistakes).
+4. **Statement Pattern Matching:** Queried citizen statements for allegations of cash bribery.
+
+## Suspect Identification Breakdown
+
+| Rank | Employee Name | Number of Tampered Records | Status |
+| :---: | :--- | ---: | :--- |
+| 1 | **Bello Azibo** | **26** | **Primary Suspect** |
+| 2 | **Malachi Mavuso** | **21** | **Primary Suspect** |
+| 3 | **Zuriel Matembo** | **17** | **Primary Suspect** |
+| 4 | **Lalitha Kaburi** | **7** | **Primary Suspect** |
+| 5-17 | 13 Other Surveyors | 1 – 5 each (Total: 31) | Expected Human Error Range |
+
+## Bribery & Evidence Findings
+- Filtering citizen statements with `statements LIKE '%cash%'` revealed multiple eyewitness accounts of officials accepting cash bribes to log favorable scores.
+- **Integrity Check:** Querying for cash allegations among employees **NOT** in the suspect list returned **0 rows (Empty Set)**.
+- **Conclusion:** Allegations of bribery are confined strictly and exclusively to the **4 identified suspects** (Bello Azibo, Malachi Mavuso, Zuriel Matembo, and Lalitha Kaburi). Evidence has been compiled for President Naledi's anti-corruption commission.

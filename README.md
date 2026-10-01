@@ -77,22 +77,28 @@ This project approaches the problem as a data analyst rather than simply as a SQ
 
 # Project Goals
 
-The analysis is structured into two comprehensive stages covering 13 distinct analytical phases:
+The analysis is structured across 15 distinct analytical phases spanning three parts:
 
 ### Part 1: Exploration, Anomaly Detection & Safe Data Cleaning
 1. **Understand the Database:** Explore available tables, columns, schema structure, and relationships.
 2. **Explore Water Sources:** Categorize source types and measure communities served.
 3. **Investigate Access Bottlenecks:** Analyze survey visits to discover extreme wait times (>8 hours).
 4. **Audit Water Quality Data:** Detect survey protocol anomalies (e.g. 218 duplicate home visits).
-5. **Clean Unreliable Pollution Data:** Detect false-clean labels and typos, test safely on a copy table, and validate.
+5. **Investigate Well Pollution:** Detect false-clean labels and biological/chemical contamination conflicts.
+6. **Safe Data Cleaning:** Build isolated sandbox copy table and apply targeted corrections.
+7. **Validation:** Re-run error queries to prove zero data-quality defects remain.
 
 ### Part 2: Advanced Aggregation, Window Functions & Temporal Analysis
-6. **Standardize Employee Records:** Synthesize corporate email addresses and trim malformed phone numbers.
-7. **Evaluate Workforce Performance:** Map employee geographic distribution and honour top field surveyors.
-8. **Analyze Geographic Distribution:** Evaluate provincial and municipal source density (60% rural breakdown).
-9. **Assess National Population Impact:** Calculate exact population shares and infrastructure failure rates (45% broken home taps).
-10. **Formulate Data-Driven Priority Queues:** Use SQL Window Functions (`RANK`, `DENSE_RANK`, `ROW_NUMBER`) to rank repair targets.
-11. **Analyze Temporal Queue Patterns:** Construct an executive SQL Pivot Table breaking down wait times by hour across all 7 days.
+8. **Standardize Employee Records:** Synthesize corporate email addresses and trim malformed phone numbers.
+9. **Evaluate Workforce Performance:** Map employee geographic distribution and honour top field surveyors.
+10. **Analyze Geographic Distribution:** Evaluate provincial and municipal source density (60% rural breakdown).
+11. **Assess National Population Impact:** Calculate exact population shares and infrastructure failure rates (45% broken home taps).
+12. **Formulate Data-Driven Priority Queues:** Use SQL Window Functions (`RANK`, `DENSE_RANK`, `ROW_NUMBER`) to rank repair targets.
+13. **Analyze Temporal Queue Patterns:** Construct an executive SQL Pivot Table breaking down wait times by hour across all 7 days.
+
+### Part 3: Auditor Verification & Corruption Investigation
+14. **Audit Data Integration & Score Comparison:** Join independent audit records (`auditor_report`, `visits`, `water_quality`) and isolate 102 tampered quality scores.
+15. **Corruption Probe & Bribery Statement Analysis:** Create persistent VIEW (`Incorrect_records`), isolate suspect employees via CTEs, and analyze citizen statements citing `"cash"` bribery.
 
 ---
 
@@ -109,6 +115,7 @@ water_quality
 visits
 water_source
 well_pollution
+auditor_report
 ```
 
 Each table represents a different part of the water-services system.
@@ -557,6 +564,8 @@ This project demonstrates practical use of:
 | **Window Functions** | `RANK()`, `DENSE_RANK()`, `ROW_NUMBER()`, `OVER (PARTITION BY ...)` | Multi-level engineering priority rankings by water source type |
 | **Conditional Logic & Pivoting** | `CASE WHEN ... THEN ... ELSE NULL END`, `NULLIF()`, `IF()` | Building an executive hourly Pivot Table across all 7 days of the week |
 | **Data Cleaning & DDL** | `CREATE TABLE ... AS`, `DROP TABLE`, `UPDATE ... SET` | Creating isolated sandbox backup tables to test updates safely |
+| **Database Views** | `CREATE VIEW ... AS` | Centralizing multi-table audit joins into reusable virtual tables (`Incorrect_records`) |
+| **Common Table Expressions (CTEs)** | `WITH ... AS (...)` | Constructing modular query pipelines to isolate suspect surveyors exceeding mistake thresholds |
 
 ---
 
@@ -647,10 +656,13 @@ maji-ndogo-sql-analysis/
 │   ├── 10_location_analysis.sql
 │   ├── 11_water_source_breakdown.sql
 │   ├── 12_priority_ranking.sql
-│   └── 13_queue_pivot_analysis.sql
+│   ├── 13_queue_pivot_analysis.sql
+│   ├── 14_auditor_comparison.sql
+│   └── 15_investigating_corruption.sql
 │
 ├── data/
 │   ├── README.md
+│   ├── Auditor_report.csv
 │   └── md_water_services.sql
 │
 ├── results/
@@ -845,10 +857,11 @@ Interested in:
 
 ## Project Status
 
-✅ **Part 1 & Part 2 Completed (Phases 1 through 13)**
+✅ **Part 1, Part 2 & Part 3 Completed (Phases 1 through 15)**
 
 - **Part 1:** Database Exploration, Anomaly Detection & Safe Data Cleaning (`sql/01` - `07`)
 - **Part 2:** Advanced Aggregation, Window Functions & Temporal Queue Analysis (`sql/08` - `13`)
+- **Part 3:** Independent Auditor Verification & Corruption Investigation (`sql/14` - `15`)
 - **Detailed Findings:** Comprehensive results log documented in [`results/README.md`](results/README.md).
 - **Executive Insights:** Strategic recommendations documented in [`docs/analysis_notes.md`](docs/analysis_notes.md).
 

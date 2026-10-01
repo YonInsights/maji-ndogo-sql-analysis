@@ -18,6 +18,8 @@ Run them in numbered order in MySQL Workbench.
 | `11_water_source_breakdown.sql` | 11 | Population impact, averages, and source percentages |
 | `12_priority_ranking.sql` | 12 | Window functions (RANK, DENSE_RANK, ROW_NUMBER) for repair priorities |
 | `13_queue_pivot_analysis.sql` | 13 | DateTime metrics and hour x day SQL Pivot Table |
+| `14_auditor_comparison.sql` | 14 | Integrate auditor report, 3-table JOIN, and score comparison |
+| `15_investigating_corruption.sql` | 15 | Create VIEW, CTE suspect list, and bribery statement analysis |
 
 ## Prerequisites
 

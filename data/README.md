@@ -30,7 +30,7 @@ The source data was provided as part of the ALX Data Science program.
 
 | \*\*Total columns\*\* | 43 |
 
-| \*\*Tables\*\* | 8 |
+| \*\*Tables\*\* | 9 |
 
 | \*\*Source\*\* | ALX Data Science / Maji Ndogo Integrated Project |
 
@@ -284,6 +284,27 @@ Column descriptions embedded in the database itself (reference table).
 
 
 
+## Table 9: `auditor_report`
+
+
+
+Independent audit records conducted by Chief Auditor Tendai Mubarak.
+
+
+
+| Column | Description | Data Type |
+|---|---|---|
+| `location_id` | FK → `location.location_id` | VARCHAR(32) |
+| `type_of_water_source` | Source type observed by independent auditor | VARCHAR(64) |
+| `true_water_source_score` | Ground-truth quality score assessed by auditor (0 to 9) | INT |
+| `statements` | Qualitative citizen interview statements | VARCHAR(255) |
+
+
+
+\---
+
+
+
 \## Relationship Diagram
 
 location ────┐
@@ -313,4 +334,6 @@ employee ◄──── assigned\_employee\_id ──── visits
 
 
 water\_quality ◄──── record\_id ──── visits
+ 
+ auditor\_report ◄──── location\_id ──── location
 

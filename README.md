@@ -705,15 +705,16 @@ Only when they are actually needed.
 
 * SQL
 
-### Development Tools
+### Development & Collaboration Tools
 
 * MySQL Workbench
 * Git
 * GitHub
+* **AI Agentic Assistant (DeepMind Antigravity)** — utilized for interactive pair programming, technical query optimization, test-driven validation, and documentation generation.
 
 ### Learning Context
 
-* ALX Data Science
+* ALX Data Science (in partnership with ExploreAI)
 
 ---
 
@@ -823,29 +824,37 @@ As the project develops, I plan to extend the analysis with:
 
 ---
 
-# Learning Context
+# Learning Context & Acknowledgements
 
-This project is part of my ALX Data Science learning journey.
+This project was developed as part of the **ALX Data Science Program** (in partnership with **ExploreAI**).
 
-It is being developed as a practical portfolio project to demonstrate my ability to:
+Special gratitude and appreciation to **ALX Africa** for delivering an exceptional, future-facing curriculum that aligns with modern industry standards. Rather than focusing merely on isolated SQL syntax, the course equips learners to confront complex, messy real-world scenarios—from uncovering corruption to planning nationwide infrastructure budgets—and encourages **AI-assisted problem solving**, reflecting how forward-thinking data scientists work in today's technology ecosystem.
 
 ```text
-Understand a problem
-        ↓
-Work with relational data
-        ↓
-Use SQL
-        ↓
-Investigate data
-        ↓
-Identify data-quality issues
-        ↓
-Clean data safely
-        ↓
-Validate results
-        ↓
-Communicate the analysis
+Understand Real-World Business Problem
+                  ↓
+       Relational Database Exploration
+                  ↓
+   Data Quality Auditing & Anomaly Detection
+                  ↓
+     Safe Sandbox Data Cleaning & Validation
+                  ↓
+    Advanced Aggregation & Window Functions
+                  ↓
+   Multi-Table Relational Joining & Views
+                  ↓
+   AI-Augmented Optimization & Documentation
+                  ↓
+ Operational Decision-Making & Engineering Action Plan
 ```
+
+### AI-Augmented Data Science Methodology
+
+This portfolio project was completed using an **AI pair programming workflow**:
+
+* **Human Leadership & Domain Knowledge:** Defining analytical objectives, evaluating hypothesis validity, executing queries in MySQL Workbench, and making informed engineering and public-policy decisions.
+* **AI Copilot & Technical Partnership:** Assisting with query optimization, test-driven validation scripts, automated cross-table verification, and publication-ready documentation.
+* **Modern Industry Practice:** Demonstrating how combining human analytical judgment with the speed and rigor of AI tools produces robust, transparent, and reproducible data science deliverables.
 
 ---
 

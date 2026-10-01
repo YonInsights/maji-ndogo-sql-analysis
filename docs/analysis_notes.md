@@ -124,3 +124,17 @@ Maji Ndogo is a nation facing critical clean water shortages. The national surve
   4. **3,379 Surface Rivers:** Deploy mobile water tanker relief immediately while drilling permanent underground community boreholes.
   5. **881 Chemically Contaminated Wells:** Install industrial Reverse Osmosis (RO) filtration units to strip toxic pollutants.
 
+---
+
+## 7. Acknowledgements & AI-Augmented Data Science Methodology
+
+### Acknowledgements to ALX Africa
+Deep gratitude to **ALX Africa** and **ExploreAI** for providing this transformative Data Science program. The curriculum's focus on real-world case studies and practical application—rather than abstract memorization—prepares emerging African data professionals to lead infrastructure, governance, and technology initiatives.
+
+### The Power of AI Pair Programming
+This complete analytical journey was built via a human-AI collaborative paradigm:
+- **Strategic Direction & Problem Formulation:** Driven by human domain perspective (highway & civil engineering, community needs, business questions).
+- **Interactive AI Copilot (DeepMind Antigravity):** Provided continuous SQL optimization, instant logic verification, testing, and comprehensive documentation synthesis.
+- **Industry Future-Proofing:** Embracing AI tools in alignment with modern engineering workflows empowers data practitioners to deliver higher quality, verified, and transparent analyses at scale.
+
+
